@@ -1,0 +1,13 @@
+node_modules
+firebase.js
+build
+.env
+.env.local
+.env.development
+.env.production
+.env.dev
+.env.prod
+bin
+obj
+.vs
+debug
