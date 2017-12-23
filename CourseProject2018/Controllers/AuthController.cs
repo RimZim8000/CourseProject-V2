@@ -16,33 +16,14 @@ namespace CourseProject2018.Controllers
         [HttpGet("~/signin")]
         public async Task<IActionResult> SignIn(int id)
         {
-
-
-            if (!User.Identity.IsAuthenticated)
+          if (!User.Identity.IsAuthenticated)
             {
                 return Challenge(new AuthenticationProperties { RedirectUri = "/signin" }, "Google");
-
-
             }
             else
             {
+
                 return Redirect("/");
-            }
-        }
-        [HttpGet("~/signin-google")]
-        public async Task<IActionResult> SignIngoogle(int id)
-        {
-
-
-            if (!User.Identity.IsAuthenticated)
-            {
-                return Challenge(new AuthenticationProperties { RedirectUri = "/signin" }, "Google");
-
-
-            }
-            else
-            {
-                return Redirect("/MyItems");
             }
         }
         // GET: api/Auth
@@ -53,7 +34,15 @@ namespace CourseProject2018.Controllers
             {
                 string s = "{";
                 foreach (var claim in User.Claims) {
-                    s += claim.Type +" : " + claim.Value + ", ";
+                    string key = "";
+                    if (claim.Type.IndexOf("/nameidentifier") >= 0)
+                        key = "usergoogleid";
+                    else if (claim.Type.IndexOf("/name") >= 0)
+                        key = "displayname";
+                    else if (claim.Type.IndexOf("/emailaddress") >= 0)
+                        key = "emailaddress";
+                    else continue;
+                    s += key +" : " + claim.Value + ", ";
                 }
                 s += "}";
                 return new string[]  { User.Identity.Name, s  };
@@ -61,6 +50,31 @@ namespace CourseProject2018.Controllers
             else
             {
                 return new string[] { "", "" };
+            }
+        }
+
+        // GET: api/Auth
+        [HttpGet("~/getLoggedInUserInfo")]
+        public Models.User getLoggedInUserInfo()
+        {
+            if (User.Identity.IsAuthenticated)
+            {
+                Models.User user = new Models.User();
+                foreach (var claim in User.Claims)
+                {
+                    if (claim.Type.IndexOf("/nameidentifier") >= 0)
+                        user.usergoogleid = claim.Value;
+                    else if (claim.Type.IndexOf("/name") >= 0)
+                        user.displayname = claim.Value;
+                    else if (claim.Type.IndexOf("/emailaddress") >= 0)
+                        user.email = claim.Value;
+                }
+               
+                return user;
+            }
+            else
+            {
+                return new Models.User(); 
             }
         }
         [HttpGet("~/signout"), HttpPost("~/signout")]
@@ -72,7 +86,17 @@ namespace CourseProject2018.Controllers
             return SignOut(new AuthenticationProperties { RedirectUri = "/" },
                 CookieAuthenticationDefaults.AuthenticationScheme);
         }
-
-        
+        [HttpGet("~/signin-google")]
+        public async Task<IActionResult> SignIngoogle(int id)
+        {
+            if (!User.Identity.IsAuthenticated)
+            {
+                return Challenge(new AuthenticationProperties { RedirectUri = "/signin" }, "Google");
+            }
+            else
+            {
+                return Redirect("/MyItems");
+            }
+        }
     }
 }

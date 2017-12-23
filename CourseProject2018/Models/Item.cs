@@ -7,7 +7,7 @@ using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
-namespace CourseProject2018
+namespace CourseProject2018.Models
 {
     public class Item {
         public int Id { get; set; }

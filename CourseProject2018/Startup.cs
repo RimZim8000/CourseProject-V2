@@ -44,9 +44,10 @@ namespace CourseProject2018
                 options.ClientId = "8084058359-9dt17ijv9lgcldm6eqkvgem7f70pu0oa.apps.googleusercontent.com";
                 options.ClientSecret = "";
             });
-            services.AddSingleton<IContactsRepository, ContactsRepository>();
-            services.AddSingleton<IUsersRepository, UsersRepository>();
+            //services.AddSingleton<IContactsRepositoryInMemory, IContactsRepositoryInMemory>();
+            //services.AddSingleton<IUsersRepositoryInMemory, UsersRepositoryInMemory>();
             services.AddSingleton<IdocdbRepository<Product>, DocdbRepository<Product>>();
+            services.AddSingleton<IdocdbRepository<Models.User>, DocdbRepository<Models.User>>();
             services.AddSingleton<IdocdbRepository<Contact>, DocdbRepository<Contact>>();
             services.AddMvc().AddXmlSerializerFormatters();
 

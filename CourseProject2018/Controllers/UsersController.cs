@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using CourseProject2018.Models;
 using CourseProject2018.Repositories;
+using Microsoft.Azure.Documents;
 
 namespace CourseProject2018.Controllers
 {
@@ -13,45 +14,51 @@ namespace CourseProject2018.Controllers
     [Route("api/Users")]
     public class UsersController : Controller
     {
-        IUsersRepository _user;
-        public UsersController(IUsersRepository u)
+        private IdocdbRepository<Models.User> _repository;
+       public UsersController(IdocdbRepository<Models.User> repository)
         {
-            _user = u;
+            _repository = repository;
+            _repository.Initialize("User");
         }
 
         // GET: api/Users
         [HttpGet]
-        public List<User> GetUsers()
+        public async Task<IEnumerable<Models.User>> GetUsers()
         {
-            return _user.GetAll();
+            IEnumerable<Models.User> lstObjects = await _repository.GetItemsAsync<Models.User>();
+            return lstObjects;
         }
 
         // GET: api/Users/5
         [HttpGet("{id}", Name = "Get")]
-        public User GetUser(string id)
+        public async Task<Models.User> GetUser(string id)
         {
-            return _user.Get(id);
+            var retObject = await _repository.GetAsync(id);
+            return retObject;
         }
-        
-        // POST: api/Users
+
+        // POST api/user
         [HttpPost]
-        public void PostUser(User u)
+        public async Task<Document> Post([FromBody] Models.User inObj)
         {
-            _user.Post(u);
+            Document document = await _repository.CreateAsync( inObj);
+            return document;
+           
         }
-        
-        // PUT: api/Users/5
+
+        // PUT api/contacts/5
         [HttpPut("{id}")]
-        public void PutUser(string id, User u)
+        public async Task<Document> Put(string id, [FromBody]Models.User inObj)
         {
-            _user.Put(id, u);
+            var document = await _repository.UpdateAsync(id, inObj);
+            return document;
         }
-        
-        // DELETE: api/ApiWithActions/5
+
+        // DELETE api/contacts/5
         [HttpDelete("{id}")]
-        public void DeleteUser(string id)
+        public async Task Delete(string id)
         {
-            _user.Delete(id);
+            await _repository.DeleteAsync(id);
         }
     }
 }
