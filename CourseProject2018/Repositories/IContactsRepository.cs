@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CourseProject2018.Repositories
 {
-    public interface IContactsRepository
+    public interface IContactsRepositoryInMemory
     {
         Contact Get(string id);
         List<Contact> GetAll();
@@ -14,10 +14,46 @@ namespace CourseProject2018.Repositories
         void Put(string id, Contact c);
         void Delete(string id);
     }
-    public class ContactsRepository : IContactsRepository
+    public class ContactsRepositoryInMemory : IContactsRepositoryInMemory
     {
         //private DocumentClient  
         List<Contact> _contacts;
+
+        public ContactsRepositoryInMemory()
+        {
+            _contacts = new List<Contact>();
+
+            filUpContactRepo();
+           
+        }
+
+        public void Delete(string id)
+        {
+            Contact c = _contacts.Find(x => x.id == id);
+            if (c != null) _contacts.Remove(c);
+        }
+
+        public Contact Get(string id)
+        {
+            return _contacts.Find(x => x.id == id);
+        }
+
+        public List<Contact> GetAll()
+        {
+            return _contacts;
+        }
+
+        public void Post(Contact c)
+        {
+            _contacts.Add(c);
+        }
+
+        public void Put(string id, Contact c)
+        {
+            Delete(id);
+            Post(c);
+        }
+
         private void filUpContactRepo2()
         {
             int start = 123456;
@@ -140,45 +176,9 @@ namespace CourseProject2018.Repositories
                 description = "THIS IS YOUR SECOND REMINDER. We would like to send our students to you library. Pl accept them. Thanks - John "
             };
             _contacts.Add(c9);
-            
+
 
         }
-        public ContactsRepository()
-        {
-            _contacts = new List<Contact>();
 
-            filUpContactRepo();
-            //{
-            //        new Contact{ id="", first_name="", last_name="", email="", subject="", description=""}
-            //};
-            
-        }
-
-        public void Delete(string id)
-        {
-            Contact c = _contacts.Find(x => x.id == id);
-            if (c != null) _contacts.Remove(c);
-        }
-
-        public Contact Get(string id)
-        {
-            return _contacts.Find(x => x.id == id);
-        }
-
-        public List<Contact> GetAll()
-        {
-            return _contacts;
-        }
-
-        public void Post(Contact c)
-        {
-            _contacts.Add(c);
-        }
-
-        public void Put(string id, Contact c)
-        {
-            Delete(id);
-            Post(c);
-        }
     }
 }

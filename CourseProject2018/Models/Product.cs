@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace CourseProject2018
+namespace CourseProject2018.Models
 {
     public class Product
     {

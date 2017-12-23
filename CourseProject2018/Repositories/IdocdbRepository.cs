@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using CourseProject2018.Models;
 
 namespace CourseProject2018
 {
@@ -15,6 +16,5 @@ namespace CourseProject2018
         Task DeleteAsync(string id);
         Task<IEnumerable<T>> GetItemsAsync<T>() where T : class;
         void Initialize(string collectionId);
-
     }
 }

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CourseProject2018.Repositories
 {
-    public interface IUsersRepository
+    public interface IUsersRepositoryInMemory
     {
         User Get(string id);
         List<User> GetAll();
@@ -15,10 +15,10 @@ namespace CourseProject2018.Repositories
         void Delete(string id);
     }
 
-    public class UsersRepository : IUsersRepository
+    public class UsersRepositoryInMemory : IUsersRepositoryInMemory
     {
         List<User> _users;
-        public UsersRepository()
+        public UsersRepositoryInMemory()
         {
             _users = new List<User>
             {

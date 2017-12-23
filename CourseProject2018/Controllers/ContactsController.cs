@@ -11,17 +11,16 @@ using CourseProject2018.Repositories;
 namespace CourseProject2018.Controllers
 {
 
-    //[Produces("application/json")]
     [Route("api/Contacts")]
     public class ContactsController : Controller
     {
         private IdocdbRepository<Contact> _repository;
-        private ContactsRepository _localContactsRepository;
+        private ContactsRepositoryInMemory _localContactsRepositoryInMemory;
         public ContactsController(IdocdbRepository<Contact> repository)
         {
             _repository = repository;
             _repository.Initialize("Contacts");
-            _localContactsRepository = new ContactsRepository();
+            _localContactsRepositoryInMemory = new ContactsRepositoryInMemory();
         }
         // GET: api/contacts
         [HttpGet]
@@ -48,7 +47,7 @@ namespace CourseProject2018.Controllers
             if (retB )//|| !retObj.id.Equals("1"))
             {// if items with id=1 is not found, pill up the collection with local repo
                 // hopefully, this will need to be done ony once
-                foreach (var o in _localContactsRepository.GetAll())
+                foreach (var o in _localContactsRepositoryInMemory.GetAll())
                 {
                     await _repository.CreateAsync(o);
                 }
@@ -62,8 +61,6 @@ namespace CourseProject2018.Controllers
         [HttpPut("{id}")]
         public async Task<Document> Put(string id, [FromBody]Contact inObj)
         {
-            //ContactsRepository contactsRepository = new ContactsRepository();
-            //Contact obj = contactsRepository.Get("1");
             var document = await _repository.UpdateAsync(id, inObj);
             return document;
         }

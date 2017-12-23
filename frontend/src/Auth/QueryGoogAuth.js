@@ -3,7 +3,7 @@ import  {mainStore} from '../mainStore';
 import getDataDB from '../Data/Data';
 export default function isUserAuthenticatedInGoogle()
 {
-    var urlForGetContactData = '/getuserinfo';
+    var urlForGetContactData = '/getLoggedInUserInfo';
     console.log('isUserAuthenticatedInGoogle - our data source is ', urlForGetContactData);//urlForGetUserData);
     console.log('........ isUserAuthenticatedInGoogle in the function isUserAuthenticatedInGoogle()........');
     console.log('########################### Login data gathering started  at - ', Date.now());
@@ -11,7 +11,7 @@ export default function isUserAuthenticatedInGoogle()
     .then(function(response)      // 1
           {                    // 2
             var json = response.data;
-            var inComingUserName = json[0];
+            var inComingUserName = json.displayname;
             console.log('########################### Loging Data gathering Ended  at - ', Date.now());
             console.log('........ Data has arrived from Loing backend provider - just after .then(json => in the function getDataFromDB()........');
             console.log("isUserAuthenticatedInGoogle- typeof json: " + typeof json);
@@ -20,7 +20,7 @@ export default function isUserAuthenticatedInGoogle()
                var retObj = 
                {
                    "name" : inComingUserName,
-                   "otherInfo" : json[1]
+                   "otherInfo" : json.email + ' ' +json.usergoogleid
                };
                console.log(retObj);
                mainStore.dispatch({type: 'USER_LOGIN', payLoad: retObj } );

@@ -112,12 +112,14 @@ class Landing extends Component {
       
     return (
       <div className='myContainer' style={{border:'1px solid lightgrey'}}>
-        <div className='App-title'>
+        <div className='App App-title' >
         <h5>Welcome to the CourseProject 2017  </h5>
-          <h5>
+        </div>
+        <div className='App-title' style={{textAlign:'right', fontWeight:'bold', fontSize:'large', marginRight:'10px'}}>
+          
           { (isUserAuthenticated() && isDataActive()) ? 'Hello, ' + mainStoreState.login.payLoad.name 
                               : 'Please login using your Google Account' } 
-          </h5>
+          
         </div>
         <div >
           {(isUserAuthenticated() && isDataActive()) ?
@@ -134,7 +136,7 @@ class Landing extends Component {
             </div>
           </div>
           :
-          <div>
+          <div style={{textAlign:'right', marginRight:'10px'}}>
             .... So that we can get your data from the datastore
           </div>
           }
