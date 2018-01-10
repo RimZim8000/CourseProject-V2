@@ -3,3 +3,269 @@ body {
   padding: 0;
   font-family: sans-serif;
 }
+
+a:hover {
+  text-decoration: none;
+}
+[data-tooltip] {
+  position: relative;
+  z-index: 2;
+  cursor: pointer;
+}
+[data-tooltip2] {
+  position: relative;
+  z-index: 2;
+  cursor: pointer;
+}
+[data-tooltip]:before,
+[data-tooltip]:after {
+  visibility: hidden;
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+  filter: progid: DXImageTransform.Microsoft.Alpha(Opacity=0);
+  opacity: 0;
+  pointer-events: none;
+}
+[data-tooltip2]:before,
+[data-tooltip2]:after {
+  visibility: hidden;
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+  filter: progid: DXImageTransform.Microsoft.Alpha(Opacity=0);
+  opacity: 0;
+  pointer-events: none;
+}
+[data-tooltip2]:before {
+  position: absolute;
+ 
+  bottom: -150%;
+  left: -500;
+  margin-bottom: 0px;
+  margin-left: 0px;
+  padding: 1px;
+  width: 50px;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
+  border:1px solid white;
+  background-color: rgb(233, 91, 91);
+  background-color: hsla(244, 71%, 49%, 0.9);
+  color: #fff;
+  content: attr(data-tooltip2);
+  text-align: center;
+  font-size: 12px;
+  line-height: 1.2;
+}
+
+/* Position tooltip above the element */
+[data-tooltip]:before {
+  position: absolute;
+ 
+  bottom: -100%;
+  left: 20%;
+  margin-bottom: 0px;
+  margin-left: 0px;
+  padding: 10px;
+  width: 260px;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
+  border:1px solid white;
+  background-color: rgb(233, 91, 91);
+  background-color: hsla(244, 71%, 49%, 0.9);
+  color: #fff;
+  content: attr(data-tooltip);
+  text-align: center;
+  font-size: 12px;
+  line-height: 1.2;
+}
+
+/* Triangle hack to make tooltip look like a speech bubble */
+[data-tooltip]:after {
+  position: absolute;
+  bottom: 150%;
+  left: 50%;
+  margin-left: -5px;
+  width: 0;
+  border-top: 5px solid #000;
+  border-top: 5px solid hsla(0, 0%, 20%, 0.9);
+  border-right: 5px solid transparent;
+  border-left: 5px solid transparent;
+  content: " ";
+  font-size: 0;
+  line-height: 0;
+}
+[data-tooltip2]:after {
+  position: absolute;
+  bottom: 150%;
+  left: 50%;
+  margin-left: -5px;
+  width: 0;
+  border-top: 5px solid #000;
+  border-top: 5px solid hsla(0, 0%, 20%, 0.9);
+  border-right: 5px solid transparent;
+  border-left: 5px solid transparent;
+  content: " ";
+  font-size: 0;
+  line-height: 0;
+}
+/* Show tooltip content on hover */
+[data-tooltip]:hover:before,
+[data-tooltip]:hover:after {
+  visibility: visible;
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
+  filter: progid: DXImageTransform.Microsoft.Alpha(Opacity=100);
+  opacity: 1;
+}
+
+/* Show tooltip content on hover */
+[data-tooltip2]:hover:before,
+[data-tooltip2]:hover:after {
+  visibility: visible;
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
+  filter: progid: DXImageTransform.Microsoft.Alpha(Opacity=100);
+  opacity: 1;
+}
+
+.slidehardAndLong{
+  animation: slide1 1000ms ease alternate 2;
+}
+@keyframes slide1{
+  0%{
+    transform: translateX(200px);
+  }
+  100%{
+    transform: translateX(0%);
+  }
+}
+.blink{
+  animation: blink 2300ms infinite ;
+}
+@keyframes blink{
+  0%{
+    opacity: 0;
+  }
+  100%{
+    opacity: 1;
+  }
+}
+
+.textRotate{
+  animation: textRotate 10s infinite linear;
+}
+@keyframes textRotate{
+  0%{
+    left: 100%;
+  }
+  100%{
+    left: -100%;
+  }
+}
+.slidehard{
+  animation: slide1 140ms ease alternate 6;
+}
+@keyframes slide1{
+  0%{
+    transform: translateX(60px);
+  }
+  100%{
+    transform: translateX(0%);
+  }
+}
+
+.trumble{
+  animation: slide2 100ms ease alternate 10;
+}
+@keyframes slide2{
+  0%{
+    transform: translateX(0%);
+  }
+  100%{
+    transform: translateX(3px);
+  }
+}
+
+.flip {
+  animation: flip 500ms ease-out forwards;
+
+}
+@keyframes flip {
+  0% {
+    transform: rotateX(0deg);
+  }
+  100%{
+  transform:rotateX(150deg);
+  }
+}
+
+.fflip {
+  animation: fflip 300ms ease-out alternate 4;
+
+}
+@keyframes fflip {
+  0% {
+    transform: rotateY(0deg);
+  }
+  100%{
+  transform:rotateY(180deg);
+  }
+}
+.bflip {
+  animation: bflip 500ms ease-out alternate 4;
+}
+@keyframes bflip {
+  0% {
+    transform: rotateZ(0deg);
+  }
+  100%{
+  transform:rotateZ(180deg);
+  }
+}
+.blurOut{
+  animation: blurOut 1200ms ease-in-out alternate 2;
+}
+@keyframes blurOut{
+  0% {
+    opacity: 1;
+    transform: rotateY(0deg)
+  }
+  
+  50% {
+    opacity: 0.5;
+    transform: rotateY(90deg)
+  }
+  
+  100% {
+    opacity: 1;
+    transform: rotateY(180deg)
+  }
+}
+.modalDialogFrame{
+    position: 'fixed';
+    top:'0px';
+    bottom:'0px';
+    left:'0px';
+    right:'0px';
+    border:'2px solid black';
+    text-Align:'center';
+    margin:'0px';
+    display: 'block';
+    z-Index:'99';
+    opacity: '1';
+    background-color:'white'
+}
+.modalDialogInternalFrame{
+  background-Color:'lightblue';
+  top:'0px';
+  bottom:'0px';
+  left:'0px';
+  right:'0px';
+  position:'absolute';
+  margin:'auto';
+  border-Radius:'25px';
+  border:'2px solid black';
+  display: 'block';
+  width:'50%';
+  height:'50%';
+  text-Align:'center';
+  opacity: '1';
+  z-Index:'999'
+}

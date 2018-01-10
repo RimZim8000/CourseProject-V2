@@ -1,45 +1,79 @@
 import axios from 'axios';
 import  {mainStore} from '../mainStore';
 import getDataDB from '../Data/Data';
-export default function isUserAuthenticatedInGoogle()
+
+export default function GetUserRegistrationInfo(fetchDataFromDB = false)
 {
-    var urlForGetContactData = '/getLoggedInUserInfo';
-    console.log('isUserAuthenticatedInGoogle - our data source is ', urlForGetContactData);//urlForGetUserData);
-    console.log('........ isUserAuthenticatedInGoogle in the function isUserAuthenticatedInGoogle()........');
+    var url = '/getregistrationinfo';
+    console.log('GetUserRegistrationInfo - our data source is ', url);//urlForGetUserData);
+    console.log('........ GetUserRegistrationInfo in the function GetUserRegistrationInfo()........');
     console.log('########################### Login data gathering started  at - ', Date.now());
-    axios.get(urlForGetContactData)
+    axios.get(url)
     .then(function(response)      // 1
           {                    // 2
             var json = response.data;
             var inComingUserName = json.displayname;
             console.log('########################### Loging Data gathering Ended  at - ', Date.now());
             console.log('........ Data has arrived from Loing backend provider - just after .then(json => in the function getDataFromDB()........');
-            console.log("isUserAuthenticatedInGoogle- typeof json: " + typeof json);
+            console.log("GetUserRegistrationInfo- typeof json: " + typeof json);
                console.log(json);
                
                var retObj = 
                {
                    "name" : inComingUserName,
-                   "otherInfo" : json.email + ' ' +json.usergoogleid
+                   "otherInfo" : 'email: ' + json.email + ' google id :' +json.usergoogid
                };
                console.log(retObj);
-               mainStore.dispatch({type: 'USER_LOGIN', payLoad: retObj } );
-               console.log('isUserAuthenticatedInGoogle function - user is - ', retObj, ' time is - ', Date.now() );
-               if(inComingUserName.length >0)
+               mainStore.dispatch({type: 'USER_LOGIN', payLoad: json } );
+               console.log('GetUserRegistrationInfo function - user is - ', json, ' time is - ', Date.now() );
+               if(inComingUserName.length >0 && fetchDataFromDB)
                {
-                    getDataDB();
+                    //getDataDB();
                }
           })
           .catch(error => {                  // 3
-           console.log('Error is isUserAuthenticatedInGoogle - ',error, ' time is - ', Date.now() );
+           console.log('Error is GetUserRegistrationInfo - ',error, ' time is - ', Date.now() );
           });
+}
+
+export  function SaveUserRegistrationInfoToDB(dataIn)
+{
+    var url = '/saveregistrationinfo/';
+        var dataToSave = {
+            id: dataIn.id, 
+            displayname:dataIn.displayname,
+            email: dataIn.email,
+            usergoogid: dataIn.usergoogid,
+            regStatus: dataIn.regStatus,
+            phone: dataIn.phone, 
+            cell1: dataIn.cell1,
+            email2: dataIn.email2,
+            address1: dataIn.address1,
+            address2: dataIn.address2,
+            city: dataIn.city,
+            state: dataIn.state,
+            zip: dataIn.zip,
+            mothersmaidenname: dataIn.mothersmaidenname, 
+            pet: dataIn.pet
+        };
+        
+        console.log('put:: dataToSave.id = ', dataToSave.id)
+        console.log('Axios:put:: started with dataToSave = ', dataToSave, ' time is - ', Date.now() );
+        axios.put(url+ dataToSave.id, dataToSave)
+        .then(function (response) {
+            GetUserRegistrationInfo();
+             console.log('DataCollector:putData() ', response, ' time is - ', Date.now() );
+           })
+           .catch(function (error) {
+                console.log('putDataDB   ', error, ' time is - ', Date.now() );
+           });
 }
 
 export  function signOutUserFromGoogle()
 {
     var urlForGetContactData = '/signout';
     console.log('signOutUserFromGoogle - our data source is ', urlForGetContactData);//urlForGetUserData);
-    console.log('........ signOutUserFromGoogle in the function isUserAuthenticatedInGoogle()........');
+    console.log('........ signOutUserFromGoogle in the function signOutUserFromGoogle()........');
     console.log('########################### Logout data gathering started  at - ', Date.now());
     axios.get(urlForGetContactData)
     .then(function(response)      // 1

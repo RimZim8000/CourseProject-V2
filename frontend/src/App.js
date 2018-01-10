@@ -5,15 +5,27 @@ import Header from './Components/Header';
 import Landing from './Components/Landing';
 import Dashboard from './Components/Dashboard';
 import MyNewItem from './Components/MyNewItem';
+import Payments from './Components/Payments';
 import UserInfo from './Components/UserInfo';
-import  {mainStore} from './mainStore';
+import Products from './Components/Products';
+import Registration from './Components/Registration';
+import ShoppingCart from './Components/ShoppingCart';
+import ListOfOrders from './Components/ListOfOrders';
+import  {mainStore, getUserRegStatus} from './mainStore';
+import  {getAllItemsFromDB} from './Data/Order';
 
 import './App.css';
 
-const Settings = () => <h1>Settings</h1>;
+
 class App extends Component {
+  constructor(props){
+    super(props);
+    console.log('App::constructor:: calling getAllItemsFromDB();');
+    getAllItemsFromDB();
+  }
   componentWillMount()
   {
+    console.log('App::componentWillMount::props ', this.props);
     mainStore.subscribe(() =>{
       //refresh the screen
       console.log('in App:componentWillMount():mainStore.subscribe(() =>loggedin user is - '
@@ -39,16 +51,21 @@ class App extends Component {
         <div className='myContainer'>
           <Header />
           <Switch>
-            <Route exact path='/' component={Landing}> </Route>
+            <Route exact path='/' component={Products}> </Route>
             <Route path='/MyItems' component={Landing}> </Route>
+            <Route path='/Payments' component={Payments}> </Route>
+            <Route path='/Products' component={Products}> </Route>
+            <Route path='/ListOfOrders' component={ListOfOrders}> </Route>
+            <Route path='/ShoppingCart' component={ShoppingCart}> </Route>
+            <Route path='/Registration' component={Registration}> </Route>
             <Route path='/MyNewItem' component={MyNewItem}> </Route>
             <Route path='/UserInfo' component={UserInfo}> </Route>
             <Route path='/Settings' component={Dashboard}> </Route>
           </Switch>
-        </div>
+         </div>
       </BrowserRouter>
     );
   }
 }
-//<div className='myContainer'> </div>
+
 export default App;

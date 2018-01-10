@@ -2,12 +2,13 @@ import React, { Component } from 'react';
 import  {isDataActive, getDataFromMainStore, isUserAuthenticated} from '../mainStore';
 import  {putDataDB, deleteDataDB, postDataDB } from '../Data/Data';
 import ConfirmationBox from './ConfirmationBox';
+import Payments from './Payments';
 //import "bootstrap";
 export class AddItem extends Component{
     constructor(props)
     {
       super(props);
-      console.log('AddItem:: constructor  time - ', Date.now() );
+      //console.log('AddItem:: constructor  time - ', Date.now() );
       //this.handleChange = this.handleChange.bind(this);
       //this.handleSubmit = this.handleSubmit.bind(this);
       // this.onAuthStateChanged = this.processLogIn.bind(this);
@@ -103,19 +104,18 @@ export class AddItem extends Component{
         case 'delete':
         {
           deleteDataDB(this.state.id);
-          console.log('delete - ok pressed');
           break;
         }
         case 'create':
         {
-          console.log('create - ok pressed');
+          //console.log('create - ok pressed');
           var changedState = this.state;
           postDataDB(changedState);
           break;
         }
         case 'update':
         {
-          console.log('update - ok pressed');
+          //console.log('update - ok pressed');
           putDataDB(this.state);
           break;
         }
@@ -127,7 +127,7 @@ export class AddItem extends Component{
     }
     OnUClick() {
         alert("in Update Click Ok event");
-        console.log('update - ok pressed');
+        //console.log('update - ok pressed');
         putDataDB(this.state);
     }
     showConfirmation()
@@ -156,16 +156,15 @@ export class AddItem extends Component{
     {
 
       
-      console.log('AddItem:renderComponent(): this.props.dataId '
-      , dataId, ' time is - ', Date.now() );
+      //console.log('AddItem:renderComponent(): this.props.dataId ', dataId, ' time is - ', Date.now() );
      
       var mainStoreData = getDataFromMainStore();
       var row = (dataId !== undefined &&  mainStoreData.length > dataId) ? dataId :0;
      
-      console.log ('AddItem:renderComponent(): selected row = ', row, ' time is - ', Date.now() );
-      console.log ('AddItem:renderComponent(): data  = ', 
-            (isDataActive()  && mainStoreData[row] !== null && mainStoreData[row] !== undefined ) 
-            ? mainStoreData[row] : 'Data is not available');
+      //console.log ('AddItem:renderComponent(): selected row = ', row, ' time is - ', Date.now() );
+      // console.log ('AddItem:renderComponent(): data  = ', 
+      //       (isDataActive()  && mainStoreData[row] !== null && mainStoreData[row] !== undefined ) 
+      //       ? mainStoreData[row] : 'Data is not available');
        var data =  mainStoreData[row];
   
       if(isUserAuthenticated() && isDataActive()  &&  data !== null && data !== undefined )
@@ -183,8 +182,6 @@ export class AddItem extends Component{
             <div>
             {this.showConfirmation()}
                 <div style={{display: 'block'}}>
-                
-                
                 <label for="first_name" style={{width:'10%'}} >First Name:  </label>
                 <input id='first_name' type="text" style={{width:'40%'}} name="first_name" 
                   placeholder='First Name'
@@ -209,35 +206,36 @@ export class AddItem extends Component{
                    />
                 </div>
                 <div>
-                <label for="subject">Subject:  </label>
-                <input id="subject" type="text" name="subject" 
+                <label for="subject" style={{width:'10%'}} >Subject:  </label>
+                <input id="subject" style={{width:'90%'}} type="text" name="subject" 
                    placeholder="Subject :" 
                    onChange={this.handleChange.bind(this,row)} 
                    value={s}
                 />
                 </div>
                 <div>
-                <label for="description">Description:  </label>
-                <textarea id="description"  rows="3" name="description" 
+                <label for="description" style={{width:'10%'}}>Description:  </label>
+                <textarea id="description" style={{width:'90%'}} rows="4" name="description" 
                   placeholder="Description" 
                   onChange={this.handleChange.bind(this,row)} 
                   value={d}
                 />
                 </div>
               <button style={{margin:'10px'}} 
-                className="btn waves-effect waves-light" 
+                className="btn waves-effect waves-light small" 
                 onClick={this.OnClickDBOperation.bind(this,'update')}
                 type="button" name="Update">Update</button>
               <button style={{margin:'10px'}} 
-                className="btn waves-effect waves-light" 
+                className="btn waves-effect waves-light  small" 
                 onClick={this.OnClickDBOperation.bind(this,'create')}
                 type="button" name="CreateNew">Create New</button>
               
               <button style={{margin:'10px'}} 
-                className="btn waves-effect waves-light" 
+                className="btn waves-effect waves-light  small" 
                 onClick={this.OnClickDBOperation.bind(this,'delete')}
                 type="button" name="Delete">Delete</button>
-              </div>
+               
+          </div>
         </div>
         )
       }

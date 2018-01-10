@@ -5,13 +5,41 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="wwwroot\" />
+    <Compile Remove="wwwroot\frontend\**" />
+    <EmbeddedResource Remove="wwwroot\frontend\**" />
+    <None Remove="wwwroot\frontend\**" />
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Scripts\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MailKit" Version="2.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.3" />
     <PackageReference Include="Microsoft.Azure.DocumentDB.Core" Version="1.7.1" />
-    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.0.0" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.0.1" />
+    <PackageReference Include="NETCore.MailKit" Version="2.0.1" />
+    <PackageReference Include="Stripe.net" Version="11.10.0" />
   </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Properties\Resources.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+
+  <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
+    <Exec Command="copy $(ProjectDir)..\frontend\build\static\js\main*.js.map   $(ProjectDir)wwwroot\Scripts\main.js.map&#xD;&#xA;copy $(ProjectDir)..\frontend\build\static\css\main*.css   $(ProjectDir)wwwroot\Scripts\main.css&#xD;&#xA;copy $(ProjectDir)..\frontend\build\static\css\main*.css.map   $(ProjectDir)wwwroot\Scripts\main.css.map&#xD;&#xA;copy $(ProjectDir)..\frontend\build\static\js\main*.js   $(ProjectDir)wwwroot\Scripts\main.js" />
+  </Target>
 
 </Project>

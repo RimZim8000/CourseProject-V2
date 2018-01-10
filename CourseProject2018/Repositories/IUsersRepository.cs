@@ -6,57 +6,58 @@ using System.Threading.Tasks;
 
 namespace CourseProject2018.Repositories
 {
-    public interface IUsersRepositoryInMemory
+
+    public interface IUserInfosRepositoryInMemory
     {
-        User Get(string id);
-        List<User> GetAll();
-        void Post(User u);
-        void Put(string id, User u);
+        UserInfo Get(string id);
+        List<UserInfo> GetAll();
+        void Post(UserInfo u);
+        void Put(string id, UserInfo u);
         void Delete(string id);
     }
 
-    public class UsersRepositoryInMemory : IUsersRepositoryInMemory
+    public class UserInfosRepositoryInMemory : IUserInfosRepositoryInMemory
     {
-        List<User> _users;
-        public UsersRepositoryInMemory()
+        List<UserInfo> _UserInfos;
+        public UserInfosRepositoryInMemory()
         {
-            _users = new List<User>
+            _UserInfos = new List<UserInfo>
             {
-                new User(){id="1", displayname="DUMMY NAME1", email="dummy1@gmail.com", usergoogleid="dummy1-user-googleid" },
-                new User(){id="2", displayname="Dummy Name2", email="dummy2@yahoo.com", usergoogleid="dummy2-user-yahooid" }
+                new UserInfo(){id="1", displayname="DUMMY NAME1", email="dummy1@gmail.com", usergoogid="dummy1-UserInfo-googleid" },
+                new UserInfo(){id="2", displayname="Dummy Name2", email="dummy2@yahoo.com", usergoogid="dummy2-UserInfo-yahooid" }
             };
         }
 
         public void Delete(string id)
         {
-            User uFound = null;
-            foreach (User u in _users)
+            UserInfo uFound = null;
+            foreach (UserInfo u in _UserInfos)
             {
                 if (u.id == id) { uFound = u; break; }
             }
-            if (uFound != null) _users.Remove(uFound);
+            if (uFound != null) _UserInfos.Remove(uFound);
         }
 
-        public User Get(string id)
+        public UserInfo Get(string id)
         {
-            foreach(User u in _users)
+            foreach(UserInfo u in _UserInfos)
             {
                 if (u.id == id) return u;
             }
-            return new User() { };
+            return new UserInfo() { };
         }
 
-        public List<User> GetAll()
+        public List<UserInfo> GetAll()
         {
-            return _users;
+            return _UserInfos;
         }
 
-        public void Post(User u)
+        public void Post(UserInfo u)
         {
-            _users.Add(u);
+            _UserInfos.Add(u);
         }
 
-        public void Put(string id, User u)
+        public void Put(string id, UserInfo u)
         {
             Delete(id);
             Post(u);

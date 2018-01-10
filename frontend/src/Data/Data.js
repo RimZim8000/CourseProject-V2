@@ -1,4 +1,4 @@
-import  {mainStore, isUserAuthenticated} from '../mainStore';
+import  {mainStore, isUserAuthenticated, getUserGoogID} from '../mainStore';
 
 import axios from 'axios';
 
@@ -13,16 +13,13 @@ export function getDataDB()
      }
     var urlForGetContactData = process.env.REACT_APP_DATASOURCE_CONTACTS;
     console.log('getDataDB() - our data source is ', urlForGetContactData);//urlForGetUserData);
-    console.log('........ Data gathering started - just before fetch(myRequest) in the function getDataFromDB()........');
-    console.log('########################### Data gathering started  at - ', Date.now());
+    console.log('########################### Data gathering started getDataDB() at - ', Date.now());
     axios.get(urlForGetContactData)
     .then(function(response)      // 1
           {                    // 2
             var json = response.data;
-            console.log('########################### Data gathering Ended  at - ', Date.now());
-            console.log('........ Data has arrived from DB - just after .then(json => in the function getDataFromDB()........');
-            console.log("getDataDB() - typeof json: " + typeof json);
-               console.log(json);
+            console.log('########################### Data gathering of getDataDB() Ended  at - ', Date.now());
+            console.log("getDataDB() has ended -  returned json: " + json);
                
                var items = json;  
                let payloadData = [...items];

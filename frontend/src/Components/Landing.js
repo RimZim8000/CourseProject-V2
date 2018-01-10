@@ -1,23 +1,19 @@
 import React, {Component} from 'react';
-import  {mainStore, getDataFromMainStore, isDataActive,  isUserAuthenticated} from '../mainStore';
+import  {mainStore, getDataFromMainStore, isDataActive, getUserName, getUserRegStatus, isUserAuthenticated} from '../mainStore';
 import AddItem from './AddItem';
 import {connect} from 'react-redux';
 import _ from 'underscore';
+import GetUserRegistrationInfo from '../Auth/QueryGoogAuth';
 class Landing extends Component { 
   constructor(props)
   {
     super(props);
-    console.log('Landing:: constructor  time - ', Date.now() );
+    // console.log('Landing:: constructor  time - ', Date.now() );
     
   }
   componentWillMount()
   {
-    mainStore.subscribe(() =>{
-      console.log('in App:componentWillMount():mainStore.subscribe(() =>arrrived FormSelection is  - '
-      , this.props.selectedRow, ' time is - ', Date.now()  );
-    });
-    console.log('Landing:componentWillMount(): this.props.selectedRow '
-      , this.props.selectedRow, ' time is - ', Date.now());
+    GetUserRegistrationInfo();
   }
   changeSel(i, e)
   {
@@ -25,16 +21,14 @@ class Landing extends Component {
   }
   getGridRows(arrayOfJSONObjects)
   {
-    console.log('Landing:getGridRows(): this.props.location '
-      , this.props.selectedRow, ' time is - ', Date.now());
+    // console.log('Landing:getGridRows(): this.props.location ', this.props.selectedRow, ' time is - ', Date.now());
     var mykeys = _.values(arrayOfJSONObjects);
-    console.log('Landing: getGridRows(arrayOfJSONObjects) - mykeys.length'
-      , mykeys.length, ' time is - ', Date.now());
+    // console.log('Landing: getGridRows(arrayOfJSONObjects) - mykeys.length', mykeys.length, ' time is - ', Date.now());
     var retArrayOfRows = [];
     var mainStoreState = mainStore.getState();
-    console.log('mainStoreState = ', mainStoreState);
+    // console.log('mainStoreState = ', mainStoreState);
     let highlightedRow = this.props.selectedRow;
-    console.log('highlightedRow = ', highlightedRow);
+    // console.log('highlightedRow = ', highlightedRow);
     for (var i=0; i < arrayOfJSONObjects.length; i++)
     {
       var row = _.mapObject(arrayOfJSONObjects[i], function(val, key) {
@@ -61,12 +55,6 @@ class Landing extends Component {
     }
     return retArrayOfRows;
    
-  }
-  handleClick(i, e)
-  {
-    console.log("Landing extends Component: table row clicked event info (i) is = "
-      , i , "   an e is ", e, ' time is - ', Date.now());
-    
   }
   getGridHeaders(arrayOfJSONObjects)
   {
@@ -103,32 +91,57 @@ class Landing extends Component {
         </div>
         );
     }
+    getHeaderTitle()
+    {
+      if (isUserAuthenticated() && isDataActive() && (getUserRegStatus() >= 20 && getUserRegStatus() < 30 ))
+      {
+        return (
+        <div>
+            Hello,  {getUserName()}  <hr/>  Please go to the registration page to register
+        </div>);
+      }
+      if (isUserAuthenticated() && isDataActive() && (getUserRegStatus() === 30 ))
+      {
+        return (
+        <div>
+            Hello,   {getUserName()} <hr/> We have sent you an email with a hyperlink to confirm your email address..,
+            <br />Please confirm your email using the link we sent you in the email to complete the registration.
+        </div>);
+      }
+      if (isUserAuthenticated() && isDataActive() && (getUserRegStatus() > 30 ))
+      {
+        return (
+          <div>
+              Hello,   {getUserName()} 
+          </div>);
+      }
+      
+      return ("Please login with Google ");
+ 
+    }
     render(){
-      console.log('in Landing:render(): this.props.location ', this.props.location, ' time is - ', Date.now());
+      // console.log('in Landing:render(): this.props.location ', this.props.location, ' time is - ', Date.now());
       var mainStoreState = mainStore.getState();
-      console.log('Landing - render - mainStoreState = ', mainStoreState);
+      // console.log('Landing - render - mainStoreState = ', mainStoreState);
       let selectedRow = this.props.selectedRow;
-      console.log('Landing - render - mainStoreState.form.payLoad = ', selectedRow);
+      // console.log('Landing - render - mainStoreState.form.payLoad = ', selectedRow);
       
     return (
       <div className='myContainer' style={{border:'1px solid lightgrey'}}>
         <div className='App App-title' >
-        <h5>Welcome to the CourseProject 2017  </h5>
+        <h5>Welcome to the CourseProject 2018  </h5>
         </div>
         <div className='App-title' style={{textAlign:'right', fontWeight:'bold', fontSize:'large', marginRight:'10px'}}>
-          
-          { (isUserAuthenticated() && isDataActive()) ? 'Hello, ' + mainStoreState.login.payLoad.name 
-                              : 'Please login using your Google Account' } 
-          
+          {  this.getHeaderTitle()}
         </div>
         <div >
-          {(isUserAuthenticated() && isDataActive()) ?
+          {(isUserAuthenticated() && isDataActive() && getUserRegStatus() > 30) ?
           <div>
-            <div style={{borderTop:'1px solid black', borderBottom:'1px solid black'}}>
+            <div style={{borderTop:'1px solid black', borderBottom:'2px solid black'}}>
               { this.myRenderData() }
             </div>
-            <br />
-            <div style={{borderTop:'1px solid black', borderBottom:'1px solid black'}}>
+            
+            <div style={{borderTop:'2px solid black', borderBottom:'1px solid black'}}>
             { <AddItem 
                 dataId={(selectedRow !== undefined) ?
                   selectedRow : '0'} 
@@ -137,7 +150,6 @@ class Landing extends Component {
           </div>
           :
           <div style={{textAlign:'right', marginRight:'10px'}}>
-            .... So that we can get your data from the datastore
           </div>
           }
         </div>

@@ -28,10 +28,10 @@ export function isUserAuthenticated()
         && myState.login.payLoad !== undefined
         && myState.login.payLoad !== '' 
         && myState.login.payLoad !== false 
-        && myState.login.payLoad.name !== null 
-        && myState.login.payLoad.name !== undefined 
-        && myState.login.payLoad.name !== '' 
-        && myState.login.payLoad.name !== false 
+        && myState.login.payLoad.displayname !== null 
+        && myState.login.payLoad.displayname !== undefined 
+        && myState.login.payLoad.displayname !== '' 
+        && myState.login.payLoad.displayname !== false 
     )
         {
             return true;
@@ -43,7 +43,15 @@ export function getUserName()
 {
     if (isUserAuthenticated() )
         {
-            return mainStore.getState().login.payLoad.name;
+            return mainStore.getState().login.payLoad.displayname;
+        }
+    return '';
+}
+export function getUserRegInfo()
+{
+    if (isUserAuthenticated() )
+        {
+            return mainStore.getState().login.payLoad;
         }
     return '';
 }
@@ -52,7 +60,97 @@ export function getUserOtherInfo()
 {
     if (isUserAuthenticated() )
         {
-            return mainStore.getState().login.payLoad.otherInfo;
+            let otherinfo = "Email: " + mainStore.getState().login.payLoad.email 
+            + " Registration Status: " + mainStore.getState().login.payLoad.regStatus;
+            return otherinfo;
+        }
+    return '';
+}
+
+export function getListOfUserOrders()
+{
+    var myState = mainStore.getState();
+    if ( 
+        myState.order !== null
+        && myState.order !== undefined
+        && myState.order !== false
+        && myState.order.listOfUserOrders !== null
+        && myState.order.listOfUserOrders !== undefined
+        && myState.order.listOfUserOrders !== false 
+        && myState.order.listOfUserOrders !== [] 
+        && myState.order.listOfUserOrders.length !== 0 
+    )
+    return mainStore.getState().order.listOfUserOrders;
+    return null;
+}
+export function getShoppingCart()
+{
+    var myState = mainStore.getState();
+    if ( 
+        myState.order !== null
+        && myState.order !== undefined
+        && myState.order !== false
+        && myState.order.shoppingCart !== null
+        && myState.order.shoppingCart !== undefined
+        && myState.order.shoppingCart !== false 
+        && myState.order.shoppingCart !== [] 
+        && myState.order.shoppingCart.length !== 0 
+    )
+    return mainStore.getState().order.shoppingCart;
+    return null;
+}
+
+export function getShoppingCartPayment()
+{
+    var myState = mainStore.getState();
+    if ( 
+        myState.order !== null
+        && myState.order !== undefined
+        && myState.order !== false
+        && myState.order.shoppingCart !== null
+        && myState.order.shoppingCart !== undefined
+        && myState.order.shoppingCart !== false 
+        && myState.order.shoppingCart !== [] 
+        && myState.order.shoppingCart.length !== 0 
+    )
+    {
+        let item = mainStore.getState().order.shoppingCart.Items.reduce((a,b) => ({q: a.q+b.q}));
+        return item.q ;
+    }
+    return 0;
+}
+
+export function getListOfAllProductItems()
+{
+    var myState = mainStore.getState();
+    if ( 
+        myState.order !== null
+        && myState.order !== undefined
+        && myState.order !== false
+        && myState.order.listOfAllProductItems !== null
+        && myState.order.listOfAllProductItems !== undefined
+        && myState.order.listOfAllProductItems !== false 
+        && myState.order.listOfAllProductItems !== [] 
+        && myState.order.listOfAllProductItems.length !== 0 
+    )
+    {
+        return myState.order.listOfAllProductItems;
+    }
+    return myState.order.listOfAllProductItems;
+}
+export function getUserGoogID()
+{
+    if (isUserAuthenticated() )
+        {
+            return mainStore.getState().login.payLoad.usergoogid;
+        }
+    return '';
+}
+export function getUserRegStatus()
+{
+    if (isUserAuthenticated() )
+        {
+            return mainStore.getState().login.payLoad.regStatus;
         }
     return '';
 }

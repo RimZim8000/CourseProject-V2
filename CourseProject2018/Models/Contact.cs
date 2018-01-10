@@ -11,7 +11,7 @@ namespace CourseProject2018.Models
     {
         [JsonProperty("id")]
         public string id { get; set; }
-
+        public string usergoogid { get; set; }
         [JsonProperty("first_name")]
         public string first_name { get; set; }
 

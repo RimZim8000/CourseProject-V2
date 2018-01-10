@@ -78,6 +78,7 @@ namespace CourseProject2018.Repositories
             Contact c0 = new Contact()
             {
                 id = "0",
+                usergoogid= "111895598430752668841",
                 first_name = "John",
                 last_name = "Smith",
                 email = "JohnSmith@JohnSmith.us",
@@ -88,6 +89,7 @@ namespace CourseProject2018.Repositories
             Contact c1 = new Contact()
             {
                 id = "1",
+                usergoogid = "111895598430752668841",
                 first_name = "DAFFY",
                 last_name = "DUCK",
                 email = "DAFFY@DUCK.CA",
@@ -98,6 +100,7 @@ namespace CourseProject2018.Repositories
             Contact c2 = new Contact()
             {
                 id = "2",
+                usergoogid = "111895598430752668841",
                 first_name = "Happy",
                 last_name = "BugsBunny",
                 email = "HayyBugsBunny@H_B_B.COM",
@@ -108,6 +111,7 @@ namespace CourseProject2018.Repositories
             Contact c3 = new Contact()
             {
                 id = "3",
+                usergoogid = "111895598430752668841",
                 first_name = "Crazy",
                 last_name = "Captain",
                 email = "Crazy_Captain1@CaptainThatIsCrazy.COM",
@@ -118,6 +122,7 @@ namespace CourseProject2018.Repositories
             Contact c4 = new Contact()
             {
                 id = "4",
+                usergoogid = "111895598430752668841",
                 first_name = "Went",
                 last_name = "Up_The_Hill",
                 email = "Went_Up_The_Hill@Up_The_Hill.CA",
@@ -129,6 +134,7 @@ namespace CourseProject2018.Repositories
             Contact c5 = new Contact()
             {
                 id = "5",
+                usergoogid = "111895598430752668841",
                 first_name = "Jack",
                 last_name = "And_Jill",
                 email = "JackAndJill@J_AND_J.com",
@@ -139,6 +145,7 @@ namespace CourseProject2018.Repositories
             Contact c6 = new Contact()
             {
                 id = "6",
+                usergoogid = "111895598430752668841",
                 first_name = "Adam",
                 last_name = "Wilson",
                 email = "AdamWilson@AdamWilson.us",
@@ -149,6 +156,7 @@ namespace CourseProject2018.Repositories
             Contact c7 = new Contact()
             {
                 id = "7",
+                usergoogid = "111895598430752668841",
                 first_name = "Will",
                 last_name = "Maker",
                 email = "WillMaker@yahoo.us",
@@ -159,6 +167,7 @@ namespace CourseProject2018.Repositories
             Contact c8 = new Contact()
             {
                 id = "8",
+                usergoogid = "111895598430752668841",
                 first_name = "JANE  ",
                 last_name = "Smith",
                 email = "JANESmith@JohnSmith.us",
@@ -169,6 +178,7 @@ namespace CourseProject2018.Repositories
             Contact c9 = new Contact()
             {
                 id = "9",
+                usergoogid = "111895598430752668841",
                 first_name = "John",
                 last_name = "Smith",
                 email = "JohnSmith@JohnSmith.us",

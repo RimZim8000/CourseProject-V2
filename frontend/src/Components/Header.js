@@ -1,24 +1,30 @@
 import React, {Component} from 'react';
-import  {mainStore, isUserAuthenticated, isDataActive, isDataActiveCheckOnlyData} from '../mainStore';
+import  {mainStore, isUserAuthenticated, isDataActive, getUserRegStatus, isDataActiveCheckOnlyData} from '../mainStore';
 import { Link } from "react-router-dom";
-import isUserAuthenticatedInGoogle, {signOutUserFromGoogle} from '../Auth/QueryGoogAuth';
-// import logo from './logo.svg';
+import GetUserRegistrationInfo, {signOutUserFromGoogle} from '../Auth/QueryGoogAuth';
+import 'materialize-css/dist/css/materialize.min.css';
+import '../index.css';
+import Payments from './Payments';
+
 class Header extends Component
 {
   constructor(props)
   {
     super(props);
-    console.log('Header:: constructor  time - ', Date.now() );
-    
+    //console.log('Header:: constructor  time - ', Date.now() );
+    this.state ={
+      flip: -1
+     }    
   }
 
   componentWillMount()
   {
-    isUserAuthenticatedInGoogle();
+    GetUserRegistrationInfo(true);
   }
   renderPreLoader(){
+    console.log('preloader isUserAuthenticated() ', isUserAuthenticated(), '  isDataActiveCheckOnlyData()  =', isDataActiveCheckOnlyData());
     var toRet = <div></div>;
-    if(isUserAuthenticated() && !isDataActiveCheckOnlyData())
+    if(isUserAuthenticated())// && !isDataActiveCheckOnlyData())
     {
       toRet =  <div class="progress">
                   <div class="indeterminate"></div>
@@ -27,20 +33,32 @@ class Header extends Component
     return toRet;
   }
   
-  doCheckLoggingUser()
-  {
-    isUserAuthenticatedInGoogle();
-  }
-
-
+ 
   doLogoutGoogle()
   {
     signOutUserFromGoogle();
   }
+
+  onAnimate()
+  {
+      let f = this.state.flip;
+      if (f <= 0) f=true;
+      else f = false;
+      this.setState({flip:f});
+      //console.log('flip status = ', this.state.flip);
+    }
+
   renderContent(){
-    console.log('in Header component renderContent  '+ mainStore.getState().login.payLoad);
+    //console.log('in Header component renderContent  '+ mainStore.getState().login.payLoad);
     if(!isUserAuthenticated()){
             return [
+              <li key='12345'>
+                <div>
+                  <Link to={'/Products'}>
+                    Products
+                  </Link>
+                </div>
+              </li>,
               <li key='10001'>
                <a href='/SignIn'>Login With Google</a>
               </li>
@@ -48,30 +66,56 @@ class Header extends Component
            ];
           }
           else {
+            if (getUserRegStatus() < 40)
+            {
             return [
-              <li key='2'>
-                <Link to={isDataActive()  ? '/MyItems/0': '/'}>MyItems</Link>
+              <li key='30003'>
+              <Link to={'/Registration'}>Register</Link>
               </li>,
-                <li key='30003'>
-                <Link to={'/UserInfo'}>User Info</Link>
-                </li>,
-                <li key='44'><a id='btnLogoutG' onClick={this.doLogoutGoogle.bind(this)}>Logout</a></li>
+              <li key='40004'>
+                <Link to={'/Products'}>Products</Link>
+              </li>,
+              <li key='50005'><a id='btnLogoutG' onClick={this.doLogoutGoogle.bind(this)}>Logout</a></li>
               ];
-          }
+            }
+            else
+            {
+            return [
+              
+              <li key='12345'>
+                <div>
+                  <Link to={'/Products'}>
+                    Products
+                  </Link>
+                </div>
+              </li>,
+              <li key='3003'>
+                <div>
+                    <Link to={'/ListOfOrders'}>
+                      ListOfOrders
+                    </Link>
+                </div>
+              </li>,
+              <li key='50005'><a id='btnLogoutG' onClick={this.doLogoutGoogle.bind(this)}>Logout</a></li>
+              ];
+            }
+        }
   }
 
     render(){
         return (
             <nav >
             <div className="nav-wrapper">
-              <a className="myleftlogo">
-              <img src='favicon.ico' className="App-logo" alt="logo" />
-              </a>
+              <a className="myleftlogo" onClick={this.onAnimate.bind(this)}> 
+                <img src='favicon.ico'  width='44px' height='44px'
+                  className={"App-logo" + " " + (this.state.flip == 1 ? "slidehardAndLong": "") + " " + (this.state.flip == 0 ? "bflip": "")} 
+                  alt="logo" />
+              </a> 
               <ul id="nav-mobile" class="right ">
                 {this.renderContent()}
               </ul>
             </div>
-              {this.renderPreLoader()}
+              {/* {this.renderPreLoader()} */}
           </nav>
         );
     }

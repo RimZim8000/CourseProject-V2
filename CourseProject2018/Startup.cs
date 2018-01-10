@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.Extensions.Configuration;
 using CourseProject2018.Repositories;
 using CourseProject2018.Models;
+using Stripe;
 
 namespace CourseProject2018
 {
@@ -38,16 +39,15 @@ namespace CourseProject2018
 
             .AddGoogle(options =>
             {
-                //options.ClientId = "560027070069-37ldt4kfuohhu3m495hk2j4pjp92d382.apps.googleusercontent.com";
-                //options.ClientSecret = "n2Q-GEw9RQjzcRbU3qhfTj8f";
                 //Below creadentials should be pulled from  RimZim8000 account https://console.developers.google.com/apis/credentials?project=courseproject-2017-2018&authuser=2
                 options.ClientId = "8084058359-9dt17ijv9lgcldm6eqkvgem7f70pu0oa.apps.googleusercontent.com";
                 options.ClientSecret = "";
             });
-            //services.AddSingleton<IContactsRepositoryInMemory, IContactsRepositoryInMemory>();
-            //services.AddSingleton<IUsersRepositoryInMemory, UsersRepositoryInMemory>();
+
+            //services.AddSingleton<IdocdbRepository<Item>, DocdbRepository<Item>>();
             services.AddSingleton<IdocdbRepository<Product>, DocdbRepository<Product>>();
-            services.AddSingleton<IdocdbRepository<Models.User>, DocdbRepository<Models.User>>();
+            services.AddSingleton<IdocdbRepository<Order>, DocdbRepository<Order>>();
+            services.AddSingleton<IdocdbRepository<UserInfo>, DocdbRepository<UserInfo>>();
             services.AddSingleton<IdocdbRepository<Contact>, DocdbRepository<Contact>>();
             services.AddMvc().AddXmlSerializerFormatters();
 
@@ -66,7 +66,7 @@ namespace CourseProject2018
             {
                 app.UseExceptionHandler("/Error");
             }
-
+            StripeConfiguration.SetApiKey("");
             app.UseStaticFiles();
             app.UseCors(builder => builder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());
             app.UseAuthentication();
