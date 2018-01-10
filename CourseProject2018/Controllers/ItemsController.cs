@@ -10,8 +10,8 @@ using Microsoft.Azure.Documents;
 
 namespace CourseProject2018.Controllers
 {
-    [Produces("application/json")]
-    [Route("api/Items")]
+    //[Produces("application/json")]
+    //[Route("api/Items")]
     public class ItemsController : Controller
     {
         private Items _repository;
@@ -20,7 +20,7 @@ namespace CourseProject2018.Controllers
             _repository = new Items();
         }
         // GET: api/Items
-        [HttpGet]
+        [HttpGet("~/api/Items")]
         public IEnumerable<Item> Get()
         {
             return _repository.getAll();

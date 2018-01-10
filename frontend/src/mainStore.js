@@ -136,7 +136,7 @@ export function getListOfAllProductItems()
     {
         return myState.order.listOfAllProductItems;
     }
-    return myState.order.listOfAllProductItems;
+    return null;
 }
 export function getUserGoogID()
 {

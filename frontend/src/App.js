@@ -21,7 +21,6 @@ class App extends Component {
   constructor(props){
     super(props);
     console.log('App::constructor:: calling getAllItemsFromDB();');
-    getAllItemsFromDB();
   }
   componentWillMount()
   {

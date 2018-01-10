@@ -4,7 +4,8 @@ import axios from 'axios';
 
 export function getAllItemsFromDB()
 {
-    axios.get("/api/Items")
+    var url = process.env.REACT_APP_GET_ALL_LIST_ITEMS;
+    axios.get(url)
         . then(
         function(response)
         {
@@ -26,17 +27,17 @@ export function getAllItemsFromDB()
 
 export function getOrdersFromDB()
 {
-    axios.get("/getuserorders")
+    var url = process.env.REACT_APP_GET_USER_ORDERS;
+    axios.get(url)
         . then(
         function(response)
         {
             console.log('axios getOrdersFromDB response  ', response);
             var json = response.data;
             console.log('########################### Data gathering of getDataDB() Ended  at - ', Date.now());
-            console.log("getDataDB() has ended -  returned json: " + json);
-               
-               var items = json;  
-               let payloadData = [...items];
+            console.log("getDataDB() has ended -  returned json: " , json);
+               var payloadData = [...json.reverse()];
+               console.log("getDataDB() has ended -  returned json: " , payloadData);
                mainStore.dispatch({type: 'LIST_OF_USER_ORDERS',payLoad:payloadData});
 
             
@@ -50,6 +51,12 @@ export function createOrdersInDB(dataIn)
     var randLetter = String.fromCharCode(65 + Math.floor(Math.random() * 26));
     var uniqid = randLetter + Date.now();
     var itemsToSave = [...dataIn.filter(item => (item.q > 0))];
+    if(itemsToSave === null || itemsToSave === undefined || itemsToSave.length ===0)
+    {
+        console.log('itemsToSave has no items slected... ');
+        mainStore.dispatch({type: 'ADD_SHOPPING_CART',payLoad:[]});
+        return;
+    }
     console.log('dataIn = ', dataIn);
     console.log('itemsToSave (q>0) = ', itemsToSave);
     var dataToSave = {
@@ -77,7 +84,8 @@ export function chargeCreditcard(token)
     var order = getShoppingCart();
     console.log('getShoppingCart();  ', getShoppingCart());
     console.log('getShoppingCartPayment();  ', getShoppingCartPayment());
-    axios.get("/charge" 
+    var url = process.env.REACT_APP_CHARGE_STRIPE;
+    axios.get(url 
             + "?email='" + token.email + "'"
             + "&token=" +  token.id 
             + "&amount=" + amountToCharge*100 
@@ -109,8 +117,8 @@ export function saveOrdersToDB(tokenemail, tokenid, amountToCharge, id, dataIn)
         Items: dataIn.Items
     };
 
-    
-    var strUrl = '/saveorder/'+id;
+    var url = process.env.REACT_APP_SAVE_ORDER;
+    var strUrl = url+'/'+id;
     console.log('put:: url = ', strUrl);
     console.log('Axios put started with saveOrderInDB = ', dataToSave, ' time is - ', Date.now() );
     axios.put(strUrl, dataToSave)

@@ -4,7 +4,8 @@ import getDataDB from '../Data/Data';
 
 export default function GetUserRegistrationInfo(fetchDataFromDB = false)
 {
-    var url = '/getregistrationinfo';
+    var url = process.env.REACT_APP_GET_REGISTRATION_INFO;
+    
     console.log('GetUserRegistrationInfo - our data source is ', url);//urlForGetUserData);
     console.log('........ GetUserRegistrationInfo in the function GetUserRegistrationInfo()........');
     console.log('########################### Login data gathering started  at - ', Date.now());
@@ -38,7 +39,8 @@ export default function GetUserRegistrationInfo(fetchDataFromDB = false)
 
 export  function SaveUserRegistrationInfoToDB(dataIn)
 {
-    var url = '/saveregistrationinfo/';
+    var url = process.env.REACT_APP_SAVE_REGISTRATION_INFO;
+    url = url+'/';
         var dataToSave = {
             id: dataIn.id, 
             displayname:dataIn.displayname,
@@ -71,11 +73,12 @@ export  function SaveUserRegistrationInfoToDB(dataIn)
 
 export  function signOutUserFromGoogle()
 {
-    var urlForGetContactData = '/signout';
-    console.log('signOutUserFromGoogle - our data source is ', urlForGetContactData);//urlForGetUserData);
+    var url = process.env.REACT_APP_SIGN_OUT;
+    
+    console.log('signOutUserFromGoogle - our data source is ', url);//urlForGetUserData);
     console.log('........ signOutUserFromGoogle in the function signOutUserFromGoogle()........');
     console.log('########################### Logout data gathering started  at - ', Date.now());
-    axios.get(urlForGetContactData)
+    axios.get(url)
     .then(function(response)      // 1
           {                    // 2
             

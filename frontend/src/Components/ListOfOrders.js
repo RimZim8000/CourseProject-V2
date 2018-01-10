@@ -1,10 +1,9 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import {connect} from 'react-redux';
-import  {mainStore, getShoppingCart,getShoppingCartPayment, getUserRegStatus, getUserName,getUserRegInfo,getListOfUserOrders} from '../mainStore';
+import  {mainStore, isUserAuthenticated, getShoppingCart,getShoppingCartPayment, getUserRegStatus, getUserName,getUserRegInfo,getListOfUserOrders} from '../mainStore';
 import {getAllItemsFromDB, createOrdersInDB, saveOrdersToDB, chargeCreditcard,getOrdersFromDB} from '../Data/Order';
 
-import 'materialize-css/dist/css/materialize.min.css';
 class ListOfOrders extends Component
 {
     constructor(props)
@@ -74,7 +73,7 @@ class ListOfOrders extends Component
     }
     showShoppingCartLink(item)
     {
-        //if(getUserRegStatus() > 30)
+        if(getUserRegStatus() > 30)
         return (
             <div style={{maxWidth:'100px', maxHeight:'40px', 
                     border:'1px solid black', backgroundColor:'rgb(233, 91, 91)', 
@@ -91,8 +90,6 @@ class ListOfOrders extends Component
     }
     renderItems()
     {
-
-
         var v = getListOfUserOrders();
         console.log('this.props.listOfUserOrders  ', this.props.listOfUserOrders);
         console.log('getListOfUserOrders  ', v);
@@ -101,23 +98,21 @@ class ListOfOrders extends Component
         {
             return (
                 <div>
-
                     List of past orders for userid = {getUserName()}
                     <ul >
                         {v.map((item) => 
                         <li style={{backgroundColor:'white', fontSize:'14px', color:'black', border:'1px solid gray' }}> 
                             <div>
-                                {'Order id:'+ item.id }, {' Date:'+ item.date}  , 
-                                {' email:'+ item.email}  , {' amount: $'+ (item.amount/100)}  
+                                {'  Order id:'+ item.id },  {'   Order was created on Date:'+ item.date}
+                                    {(item.amount<=0) 
+                                        ? "   Incomplete Order" 
+                                        : '   Email:'+ item.email  + '   Amount: $'+ (item.amount/100)
+                                    }  
                                 <p>
                                     <div>
                                         {this.showPictures(item.Items)}
                                         {this.showShoppingCartLink(item)}
                                     </div>
-                                    {/* <div style={{maxWidth:'60px', maxHeight:'30px'}}>
-                                    {this.showShoppingCartLink(item)}
-                                    </div> */}
-                                    
                                 </p>
                             </div>    
                         </li> )}
@@ -131,8 +126,16 @@ class ListOfOrders extends Component
         
         return (
             <div className='myContainer'  style={{border:'1px solid black'}}>
-            <h5> List of Orders</h5>
-                {this.renderItems()}
+                {isUserAuthenticated() ?
+                <div>
+                    <h5> List of Orders</h5>
+                    {this.renderItems()}
+                </div>
+                :
+                <div>
+                    <h5> Please login with google and complete the registration process to enter the site. </h5>
+                </div>
+                }
             </div>
         );
     }
@@ -141,10 +144,5 @@ function mapReduxStateToComponentProp(state)
   {
     return ({ listOfUserOrders:state.order.listOfUserOrders});
   }
-//   function mapReduxDispatchToComponentProp(dispatch)
-//   {
-//     return { changeSelection: (m) => dispatch({type:'FORM_SELECTION_CHANGED', payLoad:m})}
-//   }
-//export default connect(mapReduxStateToComponentProp, mapReduxDispatchToComponentProp)(ListOfOrders);
 
 export default connect(mapReduxStateToComponentProp)(ListOfOrders);

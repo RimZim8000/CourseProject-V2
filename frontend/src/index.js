@@ -15,8 +15,7 @@ initiateMainStore();
 
 
 ReactDOM.render(<Provider store={mainStore}><App /></Provider>, document.getElementById('root'));
-console.log('Index.js:: calling getAllItemsFromDB();');
-    getAllItemsFromDB();
+
 registerServiceWorker();
 
 console.log('in index.js mainStore.state is - ', mainStore.getState()|| "not set");

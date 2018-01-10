@@ -62,12 +62,23 @@ export default class Registration extends Component
     }
     showHeaderEmailMessage()
     {
-        if (getUserRegStatus() >= 30)
+        if (getUserRegStatus() === 30)
         return (
             <div>
                 <h6> Hello,   {getUserName()},  Your registartion record is already saved in the database. You can change the record using the following fields.
                     <br/> We have sent you an email with a hyperlink to confirm your email address..,
                     <br />Please click on the link we sent you in the email to complete the registration.
+                    <hr />
+                </h6>
+            </div>
+        )
+        if (getUserRegStatus() > 30)
+        return (
+            <div>
+                <h6> Hello,   {getUserName()},  Your registartion record is already saved in the database. You can change the record using the following fields.
+                    <br/> If you change and save your record, we highly recommend you to reconfirm your email address.
+                    <br /> Once you receive the confirmation email, Please click on the link we sent you in the email to complete the registration.
+                    <br /> In the meanwhile, you can keep on using the "Magic Toy Store 2018".
                     <hr />
                 </h6>
             </div>
@@ -90,82 +101,82 @@ export default class Registration extends Component
             return(
                 <div style={{border:'1px solid lightgrey'}}>
                 {this.showHeaderEmailMessage()}
-                <div>
+                <div style={{color:'black'}}>
                     <div style={{display: 'block'}}>
-                    <label for="phone" style={{width:'10%'}} >Phonenumber:  </label>
-                    <input id='phone' type="text" style={{width:'40%'}} name="phone" 
+                    <label for="phone" style={{width:'15%', color:'black'}} >Phone:  </label>
+                    <input id='phone' type="text" style={{width:'35%', color:'black'}} name="phone" 
                     placeholder='111-222-3333'
                     onChange={this.handleChange.bind(this)} 
                     value={ph}
                     />
                     </div>
                     <div>
-                    <label for='cell1' style={{width:'10%'}} >Cell Phone:  </label>
-                    <input id='cell1' type="text" style={{width:'40%'}} name="cell1" 
+                    <label for='cell1' style={{width:'15%', color:'black'}} >Cell:  </label>
+                    <input id='cell1' type="text" style={{width:'35%', color:'black'}} name="cell1" 
                     placeholder='111-222-3333'
                     onChange={this.handleChange.bind(this)} 
                         value={c}
                     />
                     </div>
                     <div>
-                        <label for="email2" style={{width:'10%'}} >Alternate Email:  </label>
-                        <input id="email2" style={{width:'90%'}}  type="text" name="email2" 
+                        <label for="email2" style={{width:'15%', color:'black'}} >Alternate Email:  </label>
+                        <input id="email2" style={{width:'85%', color:'black'}}  type="text" name="email2" 
                         placeholder='Email2'
                         onChange={this.handleChange.bind(this)} 
                         value={e}                
                         />
                     </div>
                     <div>
-                        <label for="address1" style={{width:'10%'}} >Address1:  </label>
-                        <input id="address1" style={{width:'90%'}}  type="text" name="address1" 
+                        <label for="address1" style={{width:'15%', color:'black'}} >Address1:  </label>
+                        <input id="address1" style={{width:'85%', color:'black'}}  type="text" name="address1" 
                         placeholder='1234, Awesone Ln.'
                         onChange={this.handleChange.bind(this)} 
                         value={a1}                
                         />
                     </div>
                     <div>
-                        <label for="address2" style={{width:'10%'}} >Address2:  </label>
-                        <input id="address2" style={{width:'90%'}}  type="text" name="address2" 
+                        <label for="address2" style={{width:'15%', color:'black'}} >Address2:  </label>
+                        <input id="address2" style={{width:'85%', color:'black'}}  type="text" name="address2" 
                         placeholder='Apt. Z-123'
                         onChange={this.handleChange.bind(this)} 
                         value={a2}                
                         />
                     </div>
                     <div>
-                        <label for="city" style={{width:'10%'}} >City:  </label>
-                        <input id="city" style={{width:'90%'}}  type="text" name="city" 
+                        <label for="city" style={{width:'15%', color:'black'}} >City:  </label>
+                        <input id="city" style={{width:'85%', color:'black'}}  type="text" name="city" 
                         placeholder='AwesomeVille'
                         onChange={this.handleChange.bind(this)} 
                         value={city}                
                         />
                     </div>
                     <div>
-                        <label for="state" style={{width:'10%'}} >State:  </label>
-                        <input id="state" style={{width:'90%'}}  type="text" name="state" 
+                        <label for="state" style={{width:'15%', color:'black'}} >State:  </label>
+                        <input id="state" style={{width:'85%', color:'black'}}  type="text" name="state" 
                         placeholder='WA'
                         onChange={this.handleChange.bind(this)} 
                         value={state}                
                         />
                     </div>
                     <div>
-                        <label for="zip" style={{width:'10%'}} >Zip:  </label>
-                        <input id="zip" style={{width:'90%'}}  type="text" name="zip" 
+                        <label for="zip" style={{width:'15%', color:'black'}} >Zip:  </label>
+                        <input id="zip" style={{width:'85%', color:'black'}}  type="text" name="zip" 
                         placeholder='98052'
                         onChange={this.handleChange.bind(this)} 
                         value={zip}                
                         />
                     </div>
                     <div>
-                    <label for="pet">Name of your pet:  </label>
-                    <input id="pet" type="text" name="pet" 
+                    <label for="pet" style={{color:'black'}} >Name of your pet:  </label>
+                    <input id="pet" type="text" style={{color:'black'}}  name="pet" 
                     placeholder="TomTheCat :" 
                     onChange={this.handleChange.bind(this)} 
                     value={p}
                     />
                     </div>
                     <div>
-                    <label for="mothersmaidenname">Mother's Maiden Name:  </label>
-                    <textarea id="mothersmaidenname"  rows="3" name="mothersmaidenname" 
+                    <label for="mothersmaidenname" style={{color:'black'}} >Mother's Maiden Name:  </label>
+                    <textarea id="mothersmaidenname" style={{color:'black'}}  rows="3" name="mothersmaidenname" 
                     placeholder="mothersmaidenname" 
                     onChange={this.handleChange.bind(this)} 
                     value={m}
@@ -191,19 +202,28 @@ export default class Registration extends Component
                     </h6>
                 </div>);
         }
+        
         return <div></div>;
     }
     render()
     {
         return (        
             <div className='myContainer' style={{border:'1px solid lightgrey'}}>
-        <div className='App App-title' >
-        <h5>Welcome to the Registration Form of the CourseProject 2018  </h5>
-        </div>
-        <div >
-          {this.renderComponent()}
-        </div>
-      </div>
+            {isUserAuthenticated() ?
+                <div>
+                    <div className='App App-title' >
+                        <h5>Welcome to the Registration Form of the Magic Toy Store 2018  </h5>
+                    </div>
+                    <div >
+                        {this.renderComponent()}
+                    </div>
+                </div>
+                :
+                <div>
+                    <h5> Please login with google and complete the registration process to enter the site. </h5>
+                </div>
+                }
+            </div>
         );
     }
 }

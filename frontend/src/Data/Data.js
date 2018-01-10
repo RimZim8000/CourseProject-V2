@@ -11,10 +11,10 @@ export function getDataDB()
          console.log('getDataDB() - We dont have any authenticated user in the system yet.. Login is needed to run the getDataDB function');
         return;
      }
-    var urlForGetContactData = process.env.REACT_APP_DATASOURCE_CONTACTS;
-    console.log('getDataDB() - our data source is ', urlForGetContactData);//urlForGetUserData);
+    var url = process.env.REACT_APP_DATASOURCE_CONTACTS;
+    console.log('getDataDB() - our data source is ', url);//urlForGetUserData);
     console.log('########################### Data gathering started getDataDB() at - ', Date.now());
-    axios.get(urlForGetContactData)
+    axios.get(url)
     .then(function(response)      // 1
           {                    // 2
             var json = response.data;
@@ -40,10 +40,10 @@ export function getDataDB()
         email:dataIn.email,
         subject: dataIn.subject,
         description: dataIn.description };
-    var urlForGetContactData = process.env.REACT_APP_DATASOURCE_CONTACTS;
+    var url = process.env.REACT_APP_DATASOURCE_CONTACTS;
     
     console.log('put:: dataToSave.id = ', dataToSave.id)
-    var strUrl = urlForGetContactData + '/' + dataToSave.id;
+    var strUrl = url + '/' + dataToSave.id;
     console.log('put:: url = ', strUrl);
     console.log('Axios:put:: started with dataToSave = ', dataToSave, ' time is - ', Date.now() );
     axios.put(strUrl, dataToSave)
@@ -63,9 +63,9 @@ export function getDataDB()
 
 export function deleteDataDB(idIn)
 {
-   var urlForGetContactData = process.env.REACT_APP_DATASOURCE_CONTACTS;
+   var url = process.env.REACT_APP_DATASOURCE_CONTACTS;
    console.log('delete:: idIn = ', idIn)
-   var strUrl = urlForGetContactData + '/' + idIn;
+   var strUrl = url + '/' + idIn;
    console.log('Axios: delete started with url = ', strUrl, ' time is - ', Date.now() );
    axios.delete(strUrl)
     .then(function (response) {

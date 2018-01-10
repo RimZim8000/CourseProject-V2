@@ -50,6 +50,8 @@ class Header extends Component
 
   renderContent(){
     //console.log('in Header component renderContent  '+ mainStore.getState().login.payLoad);
+    var urlSignIn = process.env.REACT_APP_SIGN_IN;
+    console.log('REACT_APP_SIGN_IN', urlSignIn);
     if(!isUserAuthenticated()){
             return [
               <li key='12345'>
@@ -60,7 +62,7 @@ class Header extends Component
                 </div>
               </li>,
               <li key='10001'>
-               <a href='/SignIn'>Login With Google</a>
+               <a href={urlSignIn}>Login With Google</a>
               </li>
               
            ];
@@ -88,6 +90,9 @@ class Header extends Component
                     Products
                   </Link>
                 </div>
+              </li>,
+              <li key='30003'>
+                <Link to={'/Registration'}>My Info</Link>
               </li>,
               <li key='3003'>
                 <div>

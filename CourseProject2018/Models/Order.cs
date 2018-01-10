@@ -10,14 +10,17 @@ namespace CourseProject2018.Models
     {
         [JsonProperty("id")]
         public string id { get; set; }
+        [JsonProperty("usergoogid")]
         public string usergoogid { get; set; }
         [JsonProperty("date")]
         public string date { get; set; }
-
         [JsonProperty("Items")]
         public List<Item> Items { get; set; }
+        [JsonProperty("email")]
         public string email { get; set; }
+        [JsonProperty("token")]
         public string token { get; set; }
+        [JsonProperty("amount")]
         public int amount { get; set; }
     }
 }
