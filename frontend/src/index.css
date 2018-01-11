@@ -157,10 +157,13 @@ a:hover {
 }
 @keyframes textRotate{
   0%{
-    left: 100%;
+    left: 30%;
+  }
+  50%{
+    left: -40%;
   }
   100%{
-    left: -100%;
+    left: -80%;
   }
 }
 .slidehard{
@@ -221,6 +224,18 @@ a:hover {
   }
   100%{
   transform:rotateZ(180deg);
+  }
+}
+
+.fliOnXaxis {
+  animation: fliOnXaxis 500ms ease-out alternate 4;
+}
+@keyframes fliOnXaxis {
+  0% {
+    transform: rotateX(0deg);
+  }
+  100%{
+  transform:rotateX(180deg);
   }
 }
 .blurOut{

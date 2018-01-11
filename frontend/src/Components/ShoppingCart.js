@@ -63,7 +63,7 @@ class ShoppingCart extends Component
     
         if(item !== null && item !== undefined )
         return (
-            < div style={{border:'1px solid black', backgroundColor:'white'}}>
+            < div style={{borderBottom:'1px solid lightgray', backgroundColor:'white'}}>
                     <div >
                         {this.showPictures(item)}
                     </div>
@@ -85,7 +85,7 @@ class ShoppingCart extends Component
                             
                         </div>
                     </div>
-                    <div style={{border:'1px solid black', backgroundColor:'white'}}>
+                    <div style={{border:'1px solid lightgray', backgroundColor:'white'}}>
                         <div style={{display:'inline'}} >
                             <label id={item.id} name={item.id} placeholder='0' style={{margin:'6px' , color:'black'}} >{item.q}</label>
                             
@@ -170,10 +170,10 @@ class ShoppingCart extends Component
                     <div class="progress">
                         <div class="indeterminate"></div>
                     </div>                    
-                    <h5> You have not selected anything yet. 
-                        Please go back to the Products screen and put some Magic Toys in the shopping cart. 
+                    <h5> Wait... Perhaps You have not selected anything yet. 
+                        If you haven't selected in the shopping cart yet, Please go back to the Products screen and put some Magic Toys in the shopping cart. 
                     </h5>
-                  </div>
+                </div>
             )
         }
         console.log('getShoppingCart()  ', getShoppingCart());
@@ -185,7 +185,9 @@ class ShoppingCart extends Component
                             <div style={{display:'inline'}}
                                 data-tooltip="Magical Toys in your shopping cart"
                             >
-                                <h4>Shopping Cart</h4>
+                            <div style={{fontSize:'4vw',background:'white', fontFamily:'script', color:'hsla(244, 71%, 49%, 0.9)'}}> Magic Toy Store : Shopping Cart </div>
+                    
+                               
                                 <h6> Hello {getUserName()}</h6>
                             </div>
                     </div>

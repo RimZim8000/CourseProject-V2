@@ -113,16 +113,23 @@ namespace CourseProject2018.Controllers
             }
         }
         [HttpGet("~/charge")]
-        public void Charge(string email, string token, int amount, string orderid)
+        public async Task Charge(string email, string token, int amount, string orderid)
         {
             QueryString q = Request.QueryString;
-            var custService = new StripeCustomerService("");
+            var custService = new StripeCustomerService(""); 
             var chargeService = new StripeChargeService("");
 
             var customer = custService.Create(new StripeCustomerCreateOptions { Email = email, SourceToken = token });
             var chargeCreateOptions = new StripeChargeCreateOptions { Amount = amount, Description = "example charge using Stripe", Currency = "USD", CustomerId = customer.Id };
             //var chargeCreateOptions = new StripeChargeCreateOptions { SourceTokenOrExistingSourceId = token, Amount = 500, Description = "example charge using Stripe", Currency = "USD" };
             var charge = chargeService.Create(chargeCreateOptions);
+            if (charge != null)
+            {
+                UserInfo currentUser = getLoggedInUserInfo();
+                string hostName = (HttpContext.Request.IsHttps) ? "https://" : "http://";
+                hostName += HttpContext.Request.Host.Value;
+                await Utility.Utility.SendPurchaseConfirmationEmail(hostName, currentUser, email, amount); 
+            }
             
         }
 

@@ -10,6 +10,8 @@ import UserInfo from './Components/UserInfo';
 import Products from './Components/Products';
 import Registration from './Components/Registration';
 import ShoppingCart from './Components/ShoppingCart';
+import About from './Components/About';
+import ContactUs from './Components/ContactUs';
 import ListOfOrders from './Components/ListOfOrders';
 import  {mainStore, getUserRegStatus} from './mainStore';
 import  {getAllItemsFromDB} from './Data/Order';
@@ -53,6 +55,8 @@ class App extends Component {
             <Route exact path='/' component={Products}> </Route>
             <Route path='/MyItems' component={Landing}> </Route>
             <Route path='/Payments' component={Payments}> </Route>
+            <Route path='/ContactUs' component={ContactUs}> </Route>
+            <Route path='/About' component={About}> </Route>
             <Route path='/Products' component={Products}> </Route>
             <Route path='/ListOfOrders' component={ListOfOrders}> </Route>
             <Route path='/ShoppingCart' component={ShoppingCart}> </Route>

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -9,196 +8,10 @@ using CourseProject2018.Repositories;
 using Microsoft.Azure.Documents;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
-using MimeKit;
-using MailKit.Net.Smtp;
-using MailKit.Security;
 
 
 namespace CourseProject2018.Controllers
 {
-    public class SmtpOptions
-    {
-        public string Server { get; set; } = string.Empty;
-        public int Port { get; set; } = 25;
-        public string User { get; set; } = string.Empty;
-        public string Password { get; set; } = string.Empty;
-        public bool UseSsl { get; set; } = false;
-        public bool RequiresAuthentication { get; set; } = false;
-        public string PreferredEncoding { get; set; } = string.Empty;
-    }
-    public class EmailSender
-    {
-        public EmailSender()
-        {
-        }
-
-        public async Task SendEmailAsync(
-        SmtpOptions smtpOptions,
-        string to,
-        string from,
-        string subject,
-        string plainTextMessage,
-        string htmlMessage,
-        string replyTo = null)
-        {
-            if (string.IsNullOrWhiteSpace(to))
-            {
-                throw new ArgumentException("no to address provided");
-            }
-
-            if (string.IsNullOrWhiteSpace(from))
-            {
-                throw new ArgumentException("no from address provided");
-            }
-
-            if (string.IsNullOrWhiteSpace(subject))
-            {
-                throw new ArgumentException("no subject provided");
-            }
-
-            var hasPlainText = !string.IsNullOrWhiteSpace(plainTextMessage);
-            var hasHtml = !string.IsNullOrWhiteSpace(htmlMessage);
-            if (!hasPlainText && !hasHtml)
-            {
-                throw new ArgumentException("no message provided");
-            }
-
-            var m = new MimeMessage();
-
-            m.From.Add(new MailboxAddress("", from));
-            if (!string.IsNullOrWhiteSpace(replyTo))
-            {
-                m.ReplyTo.Add(new MailboxAddress("", replyTo));
-            }
-            m.To.Add(new MailboxAddress("", to));
-            m.Subject = subject;
-
-            //m.Importance = MessageImportance.Normal;
-            //Header h = new Header(HeaderId.Precedence, "Bulk");
-            //m.Headers.Add()
-
-            BodyBuilder bodyBuilder = new BodyBuilder();
-            if (hasPlainText)
-            {
-                bodyBuilder.TextBody = plainTextMessage;
-            }
-
-            if (hasHtml)
-            {
-                bodyBuilder.HtmlBody = htmlMessage;
-            }
-
-            m.Body = bodyBuilder.ToMessageBody();
-
-            using (var client = new SmtpClient())
-            {
-                await client.ConnectAsync(
-                smtpOptions.Server,
-                smtpOptions.Port,
-                smtpOptions.UseSsl)
-                .ConfigureAwait(false);
-
-                // Note: since we don't have an OAuth2 token, disable
-                // the XOAUTH2 authentication mechanism.
-                client.AuthenticationMechanisms.Remove("XOAUTH2");
-
-                // Note: only needed if the SMTP server requires authentication
-                if (smtpOptions.RequiresAuthentication)
-                {
-                    await client.AuthenticateAsync(smtpOptions.User, smtpOptions.Password)
-                    .ConfigureAwait(false);
-                }
-
-                await client.SendAsync(m).ConfigureAwait(false);
-                await client.DisconnectAsync(true).ConfigureAwait(false);
-            }
-
-        }
-
-        public async Task SendMultipleEmailAsync(
-        SmtpOptions smtpOptions,
-        string toCsv,
-        string from,
-        string subject,
-        string plainTextMessage,
-        string htmlMessage)
-        {
-            if (string.IsNullOrWhiteSpace(toCsv))
-            {
-                throw new ArgumentException("no to addresses provided");
-            }
-
-            if (string.IsNullOrWhiteSpace(from))
-            {
-                throw new ArgumentException("no from address provided");
-            }
-
-            if (string.IsNullOrWhiteSpace(subject))
-            {
-                throw new ArgumentException("no subject provided");
-            }
-
-            var hasPlainText = !string.IsNullOrWhiteSpace(plainTextMessage);
-            var hasHtml = !string.IsNullOrWhiteSpace(htmlMessage);
-            if (!hasPlainText && !hasHtml)
-            {
-                throw new ArgumentException("no message provided");
-            }
-
-            var m = new MimeMessage();
-            m.From.Add(new MailboxAddress("", from));
-            string[] adrs = toCsv.Split(',');
-
-            foreach (string item in adrs)
-            {
-                if (!string.IsNullOrEmpty(item)) { m.To.Add(new MailboxAddress("", item)); ; }
-            }
-
-            m.Subject = subject;
-            m.Importance = MessageImportance.High;
-
-            BodyBuilder bodyBuilder = new BodyBuilder();
-            if (hasPlainText)
-            {
-                bodyBuilder.TextBody = plainTextMessage;
-            }
-
-            if (hasHtml)
-            {
-                bodyBuilder.HtmlBody = htmlMessage;
-            }
-
-            m.Body = bodyBuilder.ToMessageBody();
-
-            using (var client = new SmtpClient())
-            {
-                await client.ConnectAsync(
-                smtpOptions.Server,
-                smtpOptions.Port,
-                smtpOptions.UseSsl).ConfigureAwait(false);
-
-                // Note: since we don't have an OAuth2 token, disable
-                // the XOAUTH2 authentication mechanism.
- //               client.AuthenticationMechanisms.Remove("XOAUTH2");
-
-                // Note: only needed if the SMTP server requires authentication
-                if (smtpOptions.RequiresAuthentication)
-                {
-                    await client.AuthenticateAsync(
-                    smtpOptions.User,
-                    smtpOptions.Password).ConfigureAwait(false);
-                }
-
-                await client.SendAsync(m).ConfigureAwait(false);
-                await client.DisconnectAsync(true).ConfigureAwait(false);
-            }
-
-        }
-
-    }
-
-    //[Produces("application/json")]
-    //[Route("api/Users")]
     public class UsersController : Controller
     {
         public const int USER_RECORD_SAVED = 20;
@@ -212,29 +25,11 @@ namespace CourseProject2018.Controllers
             _repository = repository;
             _repository.Initialize("UserInfo");
         }
-        public async Task SendConfirmationEmail(string hostName, string emailAddress, string tokenValue)
-        {
-            var message = new MimeMessage();
-            message.From.Add(new MailboxAddress("svsaraf", "noreply@gmail.com"));
-            message.To.Add(new MailboxAddress("shree", "svsaraf@yahoo.com"));
-            message.Subject = "Please Confirm";
-            BodyBuilder bodyBuilder = new BodyBuilder();
-            bodyBuilder.HtmlBody = "Please click on <a href='"+ hostName + "/RegistrationConfirm?token="+ tokenValue + "'>this link</a> to confirm the registration";
-            message.Body = bodyBuilder.ToMessageBody();
-            using (var client = new SmtpClient())
-            {
-                await client.ConnectAsync("smtp.gmail.com", 587, SecureSocketOptions.StartTlsWhenAvailable);//465, 587
-                client.AuthenticationMechanisms.Remove("XOAUTH2"); // Must be removed for Gmail SMTP
-                await client.AuthenticateAsync("LernovicaMailSender@gmail.com", "M@1l$ender-Lernovica");
-                await client.SendAsync(message);
-                await client.DisconnectAsync(true);
-            }
-            
-        }
+        
         [HttpGet("~/signin")]
         public async Task<IActionResult> SignIn(int id)
         {
-            string emailAddress = "svsaraf@yahoo.com";
+            
             string s = HttpContext.Request.Host.Value;
 
             if (!User.Identity.IsAuthenticated)
@@ -321,7 +116,7 @@ namespace CourseProject2018.Controllers
             // Instruct the cookies middleware to delete the local cookie created
             // when the user agent is redirected from the external identity provider
             // after a successful authentication flow (e.g Google or Facebook).
-            return SignOut(new AuthenticationProperties { RedirectUri = "/" },
+            return SignOut(new AuthenticationProperties { RedirectUri = "~/" },
                 CookieAuthenticationDefaults.AuthenticationScheme);
         }
 
@@ -383,7 +178,7 @@ namespace CourseProject2018.Controllers
                 currentUser = (UserInfo)(dynamic)await _repository.UpdateAsync(currentUser.id, currentUser);
                 string hostName = (HttpContext.Request.IsHttps) ? "https://" : "http://";
                 hostName += HttpContext.Request.Host.Value;
-                await SendConfirmationEmail(hostName, currentUser.email, token);
+                await Utility.Utility.SendConfirmationEmail(hostName, currentUser, token);
             }
             return (Document)(dynamic) currentUser;
         }

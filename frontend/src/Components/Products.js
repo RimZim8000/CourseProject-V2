@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import {connect} from 'react-redux';
 import  {mainStore, isUserAuthenticated, getShoppingCart,getShoppingCartPayment, getListOfAllProductItems, getUserRegStatus, getUserName,getUserRegInfo,getListOfUserOrders} from '../mainStore';
 import {getAllItemsFromDB, createOrdersInDB, saveOrdersToDB, chargeCreditcard,getOrdersFromDB} from '../Data/Order';
-
+import {Badge} from 'reactstrap';
 import 'materialize-css/dist/css/materialize.min.css';
 class Products extends Component
 {
@@ -53,13 +53,14 @@ class Products extends Component
                 <div style={{ display:'inline'}}>
                     <img style={{color:'black'}} 
                         src={item.picture}
-                        onClick={this.onAnimate.bind(this,item)}
+                        onMouseEnter={this.onAnimate.bind(this,item)}
                         style={{width:'100px', height:'100px'}}
                         className={"App-logo responsive-img " 
                         + " " + (item.flip === 4 ? "bflip": "") + " " + (item.flip === 3 ? "slidehard": "")
                         + " " + (item.flip === 2 ? "fflip": "") + " " + (item.flip === 1 ? "trumble": "")
-                        + " " + (item.flip === 0 ? "flip": "")
+                        + " " + (item.flip === 0 ? "flip": "") + " " + (item.flip === 5 ? "fliOnXaxis": "")
                         }
+                        onMouseLeave={this.onDontAnimate.bind(this,item)}
                         alt="logo" 
                     /> 
                 </div>
@@ -70,10 +71,22 @@ class Products extends Component
     onAnimate(item, e)
     {
         //this.changeFlipState(item);
-        var x = Math.floor((Math.random() * 5));
+        let animations = 6;
+        var x = Math.floor((Math.random() * animations));
         item.flip = x;
-        if (item.flip >4) item.flip=0;
-        if (item.flip <0) item.flip=4;
+        if (item.flip >(animations-1)) item.flip=0;
+        if (item.flip <0) item.flip=(animations-1);
+        if (this.state.mock ==0)
+            this.setState({mock:1}); //(item);
+        else this.setState({mock:0});
+      //console.log('flip status = ', this.state.flip);
+    }
+    onDontAnimate(item, e)
+    {
+        //this.changeFlipState(item);
+        
+        item.flip = -1;
+        
         if (this.state.mock ==0)
             this.setState({mock:1}); //(item);
         else this.setState({mock:0});
@@ -103,7 +116,7 @@ class Products extends Component
     {
         if(getUserRegStatus() > 30 )
         return(
-            <div style={{border:'1px solid black', backgroundColor:'white'}}>
+            <div style={{border:'1px solid lightgray', backgroundColor:'white'}}>
                 <div style={{display:'inline'}} >
                     <button className='btn-small red' 
                         onClick={this.OnClickDBOperation.bind(this,item, false)}
@@ -123,8 +136,8 @@ class Products extends Component
     showMessage()
     {
         return(
-        <div className="col-sm-8 textRotate" style={{overflow:'hidden'}}>
-            Today's magical surprise... Buy one ducky and DOUBLE your luck! Another Duck will come with the order for free!!
+        <div className="col-sm-8 textRotate" style={{fontWeight:'bold', overflow:'hidden'}}>
+            Today's magical deal... Buy one ducky and get one for free!!
         </div>
         )          
     }
@@ -141,7 +154,7 @@ class Products extends Component
         }
         if(item !== null && item !== undefined )
         return (
-            < div style={{border:'1px solid black', backgroundColor:'white'}}>
+            < div style={{borderBottom:'1px solid lightgray', backgroundColor:'white'}}>
                     <div >
                         {this.showPictures(item)}
                     </div>
@@ -243,15 +256,11 @@ class Products extends Component
                     <div class="text-center">
                             <div >
                                 <div style={{display:'inline'}}>
-                                   <div><h4
-                                   data-tooltip= {(getUserRegStatus() > 30)?
-                                    "Choose quantities of the Magical Products and click on the shoppping cart to add the items in the cart"
-                                    : "Please login using google account and complete the registration process to be able to buy the Magical Toys!"
-                                    }
-                                    > Magical Toys </h4>
+                                   <div>
+                                       <div style={{fontSize:'5vw',background:'white', fontFamily:'script', color:'red'}}> Magical Toys </div>
                                     <h6> Welcome &nbsp; 
                                     {isUserAuthenticated() ? getUserName()
-                                    : "to Magic Toy Store 2018. Please login using google account and complete the registration process to be able to buy the Magical Toys!"}</h6>
+                                    : "to Magic Toy Store. Please login using google account and complete the registration process to be able to buy the Magical Toys!"}</h6>
                                    </div>
                                  </div>
                             </div>

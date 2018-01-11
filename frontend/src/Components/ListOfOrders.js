@@ -109,16 +109,42 @@ class ListOfOrders extends Component
                                         : '   Email:'+ item.email  + '   Amount: $'+ (item.amount/100)
                                     }  
                                 <p>
-                                    <div>
+                                    
                                         {this.showPictures(item.Items)}
+                                </p>
+                                <p>
                                         {this.showShoppingCartLink(item)}
-                                    </div>
+                                 
                                 </p>
                             </div>    
                         </li> )}
                     </ul>
                 </div>
             );
+        }
+        else
+        {
+            return (
+                <div>
+                    {isUserAuthenticated() ?
+                    <div>
+                        <div class="progress">
+                            <div class="indeterminate"></div>
+                        </div>  
+                        <div  style={{textAlign:'center'}}>                
+                            <h5> Wait... we are retriving the past orders for you. 
+                                If this page don't get populated within 1 min, 
+                                Please either go back to the Products page and return to this page once again, or restart the application.
+                            </h5>
+                        </div>  
+                    </div>
+                    :
+                    <div>
+                        <h5> Please login with google and complete the registration process to enter the site. </h5>
+                    </div>
+                    }
+                </div>
+            )
         }
     }
 
@@ -128,7 +154,8 @@ class ListOfOrders extends Component
             <div className='myContainer'  style={{border:'1px solid black'}}>
                 {isUserAuthenticated() ?
                 <div>
-                    <h5> List of Orders</h5>
+                    <div style={{fontSize:'5vw',background:'white', fontFamily:'script mt bold', color:'red'}}> Magic Toy Store : List of Orders</div>
+                                    
                     {this.renderItems()}
                 </div>
                 :

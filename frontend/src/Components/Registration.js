@@ -74,11 +74,11 @@ export default class Registration extends Component
         )
         if (getUserRegStatus() > 30)
         return (
-            <div>
+            <div style={{textAlign:'center'}}>
                 <h6> Hello,   {getUserName()},  Your registartion record is already saved in the database. You can change the record using the following fields.
-                    <br/> If you change and save your record, we highly recommend you to reconfirm your email address.
-                    <br /> Once you receive the confirmation email, Please click on the link we sent you in the email to complete the registration.
-                    <br /> In the meanwhile, you can keep on using the "Magic Toy Store 2018".
+                    If you change and save your record, we highly recommend you to reconfirm your email address.
+                    Once you receive the confirmation email, Please click on the link we sent you in the email to complete the registration.
+                    In the meanwhile, you can keep on using the "Magic Toy Store".
                     <hr />
                 </h6>
             </div>
@@ -212,7 +212,8 @@ export default class Registration extends Component
             {isUserAuthenticated() ?
                 <div>
                     <div className='App App-title' >
-                        <h5>Welcome to the Registration Form of the Magic Toy Store 2018  </h5>
+                    <div style={{fontSize:'4vw',background:'white', fontFamily:'script', color:'hsla(244, 71%, 49%, 0.9)'}}> Welcome to the Registration Form of the Magic Toy Store </div>
+                        
                     </div>
                     <div >
                         {this.renderComponent()}
